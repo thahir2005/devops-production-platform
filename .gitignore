@@ -11,3 +11,6 @@ __pycache__/
 *.tfstate.*
 *.tfplan
 **/deployment-metadata.json
+
+# Local monitoring secrets
+infrastructure/monitoring/grafana-secret.yaml
