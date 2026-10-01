@@ -1,5 +1,7 @@
-from fastapi import FastAPI
 from datetime import datetime, timezone
+
+from fastapi import FastAPI
+from prometheus_fastapi_instrumentator import Instrumentator
 
 app = FastAPI(
     title="Production Reliability API",
@@ -32,3 +34,6 @@ def info():
         "environment": "development",
         "version": "1.0.0",
     }
+
+
+Instrumentator().instrument(app).expose(app)
