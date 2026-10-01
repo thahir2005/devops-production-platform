@@ -583,3 +583,21 @@ Example:
 ## Project Goal
 
 The goal of this project is to demonstrate how a production-style application can be built, tested, secured, containerized, deployed, monitored, and automatically recovered using modern DevOps and DevSecOps practices.
+## Screenshots
+
+### CI/CD Pipeline
+
+![GitHub Actions CI/CD Pipeline](docs/screenshots/ci-pipeline.png)
+
+### Kubernetes Deployment
+
+![Kubernetes Deployment](docs/screenshots/kubernetes-deployment.png)
+
+### Prometheus Target Health
+
+![Prometheus Target Health](docs/screenshots/prometheus-target.png)
+
+### Grafana Monitoring Dashboard
+
+![Grafana Monitoring Dashboard](docs/screenshots/grafana-dashboard.png)
+
