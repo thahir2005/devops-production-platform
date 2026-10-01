@@ -60,6 +60,15 @@ jobs:
             -summary \
             /manifests   
 
+      - name: Validate monitoring manifests
+        run: |
+          docker run --rm \
+            -v "$PWD/infrastructure/monitoring:/manifests" \
+            ghcr.io/yannh/kubeconform:latest \
+            -strict \
+            -summary \
+            /manifests
+
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
         with:
