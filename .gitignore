@@ -9,4 +9,4 @@ __pycache__/
 **/.terraform/
 *.tfstate
 *.tfstate.*
-*.tfplan
+*.tfplan**/deployment-metadata.json
