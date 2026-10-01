@@ -4,65 +4,65 @@ A production-style DevOps and DevSecOps platform demonstrating automated CI/CD, 
 
 ## Architecture
 
-Developer
+    Developer
 
-  |
+        |
 
-  v
+        v
 
-GitHub
+      GitHub
 
-  |
+        |
 
-  v
+        v
 
-GitHub Actions
+    GitHub Actions
 
-  |
+        |
 
-  +-- Python Tests
+        +-- Python Tests
 
-  +-- Terraform Validation
+        +-- Terraform Validation
 
-  +-- Kubernetes Validation
+        +-- Kubernetes Validation
 
-  +-- Gitleaks Secret Scan
+        +-- Gitleaks Secret Scan
 
-  +-- pip-audit Dependency Scan
+        +-- pip-audit Dependency Scan
 
-  +-- Docker Build
+        +-- Docker Build
 
-  +-- Trivy Container Scan
+        +-- Trivy Container Scan
 
-  |
+        |
 
-  v
+        v
 
-GitHub Container Registry
+    GitHub Container Registry
 
-  |
+        |
 
-  v
+        v
 
-Kubernetes / Minikube
+    Kubernetes / Minikube
 
-  |
+        |
 
-  +-- Replica 1
+        +-- Replica 1
 
-  +-- Replica 2
+        +-- Replica 2
 
-  |
+        |
 
-  v
+        v
 
-Prometheus
+    Prometheus
 
-  |
+        |
 
-  v
+        v
 
-Grafana
+      Grafana
 
 ## Key Features
 
@@ -70,19 +70,21 @@ Grafana
 
 - Docker containerization
 
+- GitHub Container Registry
+
 - Kubernetes deployment with 2 replicas
 
 - Readiness and liveness probes
 
 - Kubernetes self-healing
 
-- Resource requests and limits
+- CPU and memory resource requests and limits
 
 - Terraform infrastructure configuration
 
 - GitHub Actions CI/CD
 
-- GitHub Container Registry
+- Kubernetes manifest validation with Kubeconform
 
 - Gitleaks secret scanning
 
@@ -96,8 +98,6 @@ Grafana
 
 - Persistent Grafana storage
 
-- Kubernetes manifest validation with Kubeconform
-
 ## Tech Stack
 
 | Category | Technology |
@@ -105,6 +105,8 @@ Grafana
 |---|---|
 
 | Application | Python, FastAPI |
+
+| Testing | Pytest |
 
 | Containerization | Docker |
 
@@ -126,57 +128,57 @@ Grafana
 
 ## Project Structure
 
-devops-production-platform/
+    devops-production-platform/
 
-├── app/
+    ├── app/
 
-│   └── main.py
+    │   └── main.py
 
-├── infrastructure/
+    ├── infrastructure/
 
-│   ├── kubernetes/
+    │   ├── kubernetes/
 
-│   │   ├── deployment.yaml
+    │   │   ├── deployment.yaml
 
-│   │   └── service.yaml
+    │   │   └── service.yaml
 
-│   ├── monitoring/
+    │   ├── monitoring/
 
-│   │   ├── grafana-deployment.yaml
+    │   │   ├── grafana-deployment.yaml
 
-│   │   ├── grafana-pvc.yaml
+    │   │   ├── grafana-pvc.yaml
 
-│   │   ├── grafana-service.yaml
+    │   │   ├── grafana-service.yaml
 
-│   │   ├── prometheus-config.yaml
+    │   │   ├── prometheus-config.yaml
 
-│   │   ├── prometheus-deployment.yaml
+    │   │   ├── prometheus-deployment.yaml
 
-│   │   └── prometheus-service.yaml
+    │   │   └── prometheus-service.yaml
 
-│   └── terraform/
+    │   └── terraform/
 
-│       ├── main.tf
+    │       ├── main.tf
 
-│       ├── variables.tf
+    │       ├── variables.tf
 
-│       ├── outputs.tf
+    │       ├── outputs.tf
 
-│       └── versions.tf
+    │       └── versions.tf
 
-├── .github/
+    ├── .github/
 
-│   └── workflows/
+    │   └── workflows/
 
-│       └── ci.yml
+    │       └── ci.yml
 
-├── Dockerfile
+    ├── Dockerfile
 
-├── requirements.txt
+    ├── requirements.txt
 
-├── .gitignore
+    ├── .gitignore
 
-└── README.md
+    └── README.md
 
 ## Application
 
@@ -216,21 +218,11 @@ Run the application:
 
     uvicorn app.main:app --reload
 
-The application runs on:
-
-    http://localhost:8000
-
-Health endpoint:
-
-    http://localhost:8000/health
-
-Metrics endpoint:
-
-    http://localhost:8000/metrics
+The application runs on `http://localhost:8000`.
 
 ## Docker
 
-Build the image:
+Build the application image:
 
     docker build -t production-reliability-api:latest .
 
@@ -238,351 +230,142 @@ Run the container:
 
     docker run --rm -p 8000:8000 production-reliability-api:latest
 
-Test the application:
+Verify the health endpoint:
 
     curl http://localhost:8000/health
 
-## Terraform
+## Kubernetes Deployment
 
-Initialize Terraform:
+The application is deployed to Kubernetes using a Deployment and Service.
 
-    cd infrastructure/terraform
+Key Kubernetes features include:
 
-    terraform init
-
-Format Terraform files:
-
-    terraform fmt
-
-Validate Terraform:
-
-    terraform validate
-
-Create a plan:
-
-    terraform plan
-
-Apply the configuration:
-
-    terraform apply
-
-## Kubernetes
-
-Start Minikube:
-
-    minikube start --driver=docker
-
-Verify the cluster:
-
-    kubectl get nodes
-
-Build the application image:
-
-    docker build -t production-reliability-api:latest .
-
-Load the image into Minikube:
-
-    minikube image load production-reliability-api:latest
-
-Deploy the application:
-
-    kubectl apply -f infrastructure/kubernetes/
-
-Check the pods:
-
-    kubectl get pods
-
-Check the service:
-
-    kubectl get svc
-
-Access the application:
-
-    minikube service production-reliability-api --url
-
-## Kubernetes Reliability
-
-The application runs with two replicas.
-
-The deployment includes:
+- 2 application replicas
 
 - Readiness probe
 
 - Liveness probe
 
-- CPU requests
+- CPU and memory requests
 
-- Memory requests
+- CPU and memory limits
 
-- CPU limits
+- Kubernetes self-healing
 
-- Memory limits
+- NodePort service exposure
 
-- Automatic pod recreation
+Deploy the application:
 
-### Self-Healing
+    kubectl apply -f infrastructure/kubernetes/
 
-The Kubernetes deployment was tested by deleting both application pods:
+Verify the deployment:
+
+    kubectl get deployments
+
+    kubectl get pods
+
+    kubectl get services
+
+Test Kubernetes self-healing:
 
     kubectl delete pod -l app=production-reliability-api
 
-Kubernetes automatically recreated both pods and returned them to:
+Kubernetes automatically recreates the deleted pods to maintain the desired replica count.
 
-    1/1 Running
+## Infrastructure Validation
 
-This demonstrates Kubernetes self-healing and replica management.
+Terraform is used to manage deployment metadata and demonstrate infrastructure-as-code practices.
+
+Validate Terraform configuration:
+
+    cd infrastructure/terraform
+
+    terraform fmt -check
+
+    terraform init
+
+    terraform validate
+
+    terraform plan
 
 ## CI/CD Pipeline
 
-GitHub Actions runs automatically on pushes to `main` and pull requests targeting `main`.
+GitHub Actions automatically validates every push and pull request targeting the main branch.
 
-Pipeline stages:
+The pipeline performs:
 
-    Checkout
+1. Repository secret scanning with Gitleaks
 
-      |
+2. Python dependency installation
 
-      v
+3. Python test execution with Pytest
 
-    Gitleaks
+4. Terraform format validation
 
-      |
+5. Terraform initialization and validation
 
-      v
+6. Kubernetes manifest validation with Kubeconform
 
-    Python Dependency Installation
+7. Monitoring manifest validation
 
-      |
+8. Docker image build
 
-      v
+9. Container vulnerability scanning with Trivy
 
-    Pytest
+10. Python dependency vulnerability scanning with pip-audit
 
-      |
+11. Docker image publishing to GitHub Container Registry
 
-      v
+Images are tagged using the Git commit SHA for traceability.
 
-    Terraform Validation
+## Security
 
-      |
-
-      v
-
-    Kubernetes Validation
-
-      |
-
-      v
-
-    Monitoring Validation
-
-      |
-
-      v
-
-    Docker Build
-
-      |
-
-      v
-
-    Trivy Security Scan
-
-      |
-
-      v
-
-    Push Image to GHCR
-
-## DevSecOps
-
-Security is integrated directly into the CI/CD pipeline.
+Security is integrated into the CI/CD pipeline rather than treated as a separate manual step.
 
 ### Gitleaks
 
 Scans the repository for accidentally committed secrets.
 
-### pip-audit
-
-Scans Python dependencies for known security vulnerabilities.
-
-Current result:
-
-    No known vulnerabilities found
-
 ### Trivy
 
-Scans the Docker image for operating-system vulnerabilities.
+Scans the container image for HIGH and CRITICAL operating-system vulnerabilities.
 
-The CI pipeline fails when configured HIGH or CRITICAL vulnerabilities are detected.
+### pip-audit
+
+Checks Python dependencies against known vulnerability databases.
+
+The current dependency set passes pip-audit with no known vulnerabilities.
 
 ## Monitoring
 
-The application exposes Prometheus metrics through:
+The application exposes Prometheus-compatible metrics through `/metrics`.
 
-    /metrics
+Prometheus scrapes the application every 15 seconds.
 
-Prometheus scrapes the Kubernetes service:
+Grafana is configured with Prometheus as its data source and provides dashboards for:
 
-    production-reliability-api.default.svc.cluster.local:8000
+- HTTP request rate
 
-The Prometheus target was verified successfully with:
+- HTTP response status
 
-    up = 1
+- P95 request latency
 
-## Grafana
+- Total HTTP requests
 
-Grafana is connected to Prometheus and provides application observability.
+- Application instances
 
-Dashboard panels include:
+- Application availability
 
-1. HTTP Request Rate
+Grafana data is stored using a persistent Kubernetes volume.
 
-2. HTTP Response Status
+## Reliability Demonstration
 
-3. P95 Request Latency
+The project demonstrates Kubernetes self-healing by running two application replicas.
 
-4. Total HTTP Requests
+When application pods are manually deleted, Kubernetes automatically creates replacement pods to restore the desired state.
 
-5. Application Instances
+The application also uses readiness and liveness probes to allow Kubernetes to determine whether the service is ready to receive traffic and whether the container remains healthy.
 
-6. Application Availability
-
-Grafana data is persisted using a Kubernetes PersistentVolumeClaim.
-
-## Monitoring Architecture
-
-    FastAPI
-
-       |
-
-       | /metrics
-
-       v
-
-    Prometheus
-
-       |
-
-       | PromQL
-
-       v
-
-    Grafana
-
-       |
-
-       v
-
-    Monitoring Dashboard
-
-## Infrastructure Validation
-
-Terraform configuration is validated using:
-
-    terraform fmt -check
-
-    terraform validate
-
-Kubernetes manifests are validated using Kubeconform during CI.
-
-This prevents invalid infrastructure and Kubernetes configuration from progressing through the pipeline.
-
-## Container Registry
-
-Docker images are pushed to GitHub Container Registry.
-
-Images are tagged using the Git commit SHA to provide immutable build references.
-
-Example:
-
-    ghcr.io/thahir2005/devops-production-platform:<commit-sha>
-
-## Verification Results
-
-| Component | Status |
-
-|---|---|
-
-| Python Tests | PASS |
-
-| Docker Build | PASS |
-
-| Terraform Validation | PASS |
-
-| Kubernetes Validation | PASS |
-
-| Monitoring Manifest Validation | PASS |
-
-| Gitleaks | PASS |
-
-| pip-audit | PASS |
-
-| Trivy | PASS |
-
-| GHCR Push | PASS |
-
-| Kubernetes Deployment | PASS |
-
-| 2 Replicas | PASS |
-
-| Readiness Probe | PASS |
-
-| Liveness Probe | PASS |
-
-| Self-Healing | PASS |
-
-| Prometheus Scraping | PASS |
-
-| Grafana Dashboard | PASS |
-
-## Skills Demonstrated
-
-- Linux
-
-- Git
-
-- GitHub
-
-- GitHub Actions
-
-- CI/CD
-
-- Docker
-
-- Kubernetes
-
-- Minikube
-
-- Terraform
-
-- Python
-
-- FastAPI
-
-- GitHub Container Registry
-
-- Prometheus
-
-- Grafana
-
-- Infrastructure Validation
-
-- Container Security
-
-- Dependency Security
-
-- Secret Detection
-
-- DevSecOps
-
-- Application Observability
-
-- Kubernetes Reliability
-
-## Project Goal
-
-The goal of this project is to demonstrate how a production-style application can be built, tested, secured, containerized, deployed, monitored, and automatically recovered using modern DevOps and DevSecOps practices.
 ## Screenshots
 
 ### CI/CD Pipeline
@@ -600,4 +383,44 @@ The goal of this project is to demonstrate how a production-style application ca
 ### Grafana Monitoring Dashboard
 
 ![Grafana Monitoring Dashboard](docs/screenshots/grafana-dashboard.png)
+
+## Project Highlights
+
+This project demonstrates an end-to-end DevOps workflow covering:
+
+- Application development
+
+- Automated testing
+
+- Containerization
+
+- Infrastructure as Code
+
+- Kubernetes orchestration
+
+- CI/CD automation
+
+- Container registry integration
+
+- Security scanning
+
+- Dependency security
+
+- Application monitoring
+
+- Metrics collection
+
+- Dashboarding
+
+- Kubernetes self-healing
+
+- Persistent monitoring storage
+
+## Author
+
+**Thahir**
+
+B.Tech Computer Science and Information Technology
+
+SRKR Engineering College
 
