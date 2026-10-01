@@ -35,6 +35,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Audit Python dependencies
+        run: |
+          pip install pip-audit
+          pip-audit -r requirements.txt
+
       - name: Run Python tests
         run: pytest
 
@@ -95,6 +100,7 @@ jobs:
           ignore-unfixed: true
           severity: CRITICAL,HIGH
           scanners: vuln
+          vuln-type: os
 
       - name: Push Docker image
         run: |
