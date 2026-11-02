@@ -2,6 +2,8 @@
 
 A production-style DevOps and DevSecOps platform demonstrating automated CI/CD, containerization, Kubernetes deployment, infrastructure validation, security scanning, and application observability.
 
+![CI](https://github.com/thahir2005/devops-production-platform/actions/workflows/ci.yml/badge.svg)
+
 
 <p align="center">
   <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white"/>
