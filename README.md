@@ -2,6 +2,9 @@
 
 A production-style DevOps and DevSecOps platform demonstrating automated CI/CD, containerization, Kubernetes deployment, infrastructure validation, security scanning, and application observability.
 
+## Architecture
+
+```mermaid
 flowchart TD
     A[Developer] --> B[GitHub Repository]
     B --> C[GitHub Actions CI/CD]
@@ -21,9 +24,10 @@ flowchart TD
     I --> J[Trivy Container Scan]
     J --> K[GitHub Container Registry]
     K --> L[Kubernetes / Minikube]
-
     L --> M[Prometheus]
     M --> N[Grafana Dashboard]
+` ``` `
+
 ## Key Features
 
 - FastAPI production-style application
