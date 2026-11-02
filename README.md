@@ -2,68 +2,28 @@
 
 A production-style DevOps and DevSecOps platform demonstrating automated CI/CD, containerization, Kubernetes deployment, infrastructure validation, security scanning, and application observability.
 
-## Architecture
+flowchart TD
+    A[Developer] --> B[GitHub Repository]
+    B --> C[GitHub Actions CI/CD]
 
-    Developer
+    C --> D[Python Tests]
+    C --> E[Terraform Validation]
+    C --> F[Kubernetes Validation]
+    C --> G[Gitleaks Secret Scan]
+    C --> H[pip-audit Dependency Scan]
 
-        |
+    D --> I[Docker Build]
+    E --> I
+    F --> I
+    G --> I
+    H --> I
 
-        v
+    I --> J[Trivy Container Scan]
+    J --> K[GitHub Container Registry]
+    K --> L[Kubernetes / Minikube]
 
-      GitHub
-
-        |
-
-        v
-
-    GitHub Actions
-
-        |
-
-        +-- Python Tests
-
-        +-- Terraform Validation
-
-        +-- Kubernetes Validation
-
-        +-- Gitleaks Secret Scan
-
-        +-- pip-audit Dependency Scan
-
-        +-- Docker Build
-
-        +-- Trivy Container Scan
-
-        |
-
-        v
-
-    GitHub Container Registry
-
-        |
-
-        v
-
-    Kubernetes / Minikube
-
-        |
-
-        +-- Replica 1
-
-        +-- Replica 2
-
-        |
-
-        v
-
-    Prometheus
-
-        |
-
-        v
-
-      Grafana
-
+    L --> M[Prometheus]
+    M --> N[Grafana Dashboard]
 ## Key Features
 
 - FastAPI production-style application
