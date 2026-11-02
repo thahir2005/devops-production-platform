@@ -26,7 +26,7 @@ flowchart TD
     K --> L[Kubernetes / Minikube]
     L --> M[Prometheus]
     M --> N[Grafana Dashboard]
-` ``` `
+``` 
 
 ## Key Features
 
